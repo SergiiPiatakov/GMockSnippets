@@ -39,6 +39,10 @@ TEST_F (ControllerTest, GetState_Alarm)
     // Arrange.
     EXPECT_CALL (* (static_cast <MockDevice *> (device) ), GetMeasurement () )
                 .WillOnce (Return (-1) );
+    EXPECT_CALL (* (static_cast <MockDevice *> (device) ), SetMode (SmartDevice::Mode::Off) )
+                .Times (1);
+    EXPECT_CALL (* (static_cast <MockDevice *> (device) ), SetMode (SmartDevice::Mode::On) )
+                .Times (1);
     const SmartDevice::Status etalon {SmartDevice::Status::Alarm};
 
     // Act.

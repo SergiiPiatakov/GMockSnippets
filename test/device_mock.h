@@ -12,6 +12,7 @@ class MockDevice : public SmartDevice::IDevice
          ~MockDevice   () = default;
 
         MOCK_METHOD0(GetMeasurement, SmartDevice::Measurement());
+        MOCK_METHOD1(SetMode, void(SmartDevice::Mode));
 };
 
 #endif//SMART_DEVICE_MOCK_DEVICE_H
