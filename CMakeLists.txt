@@ -21,3 +21,8 @@ add_library (
     controller SHARED
     ${controller_SOURCES}
 )
+
+# Enable ExternalProject_Add directive.
+include (ExternalProject)
+
+add_subdirectory (test)
