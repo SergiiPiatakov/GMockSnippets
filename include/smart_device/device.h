@@ -13,6 +13,7 @@ class IDevice
         virtual ~IDevice                    () = default;
 
         virtual Measurement GetMeasurement  () = 0;
+        virtual void SetMode                (Mode) = 0;
 };
 
 }// namespace SmartDevice

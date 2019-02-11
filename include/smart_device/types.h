@@ -12,6 +12,12 @@ enum class Status
     Alarm
 };
 
+enum class Mode
+{
+    On,
+    Off
+};
+
 }// namespace SmartDevice
 
 #endif//SMART_DEVICE_TYPES_H
