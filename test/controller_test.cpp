@@ -3,6 +3,7 @@
 #include "device_mock.h"
 
 using ::testing::Return;
+using ::testing::InSequence;
 
 class ControllerTest : public ::testing::Test
 {
@@ -37,12 +38,14 @@ TEST_F (ControllerTest, CreateController)
 TEST_F (ControllerTest, GetState_Alarm)
 {
     // Arrange.
-    EXPECT_CALL (* (static_cast <MockDevice *> (device) ), GetMeasurement () )
-                .WillOnce (Return (-1) );
+    InSequence s;   // We worry about the sequence!
+
     EXPECT_CALL (* (static_cast <MockDevice *> (device) ), SetMode (SmartDevice::Mode::Off) )
                 .Times (1);
     EXPECT_CALL (* (static_cast <MockDevice *> (device) ), SetMode (SmartDevice::Mode::On) )
                 .Times (1);
+    EXPECT_CALL (* (static_cast <MockDevice *> (device) ), GetMeasurement () )
+                .WillOnce (Return (-1) );
     const SmartDevice::Status etalon {SmartDevice::Status::Alarm};
 
     // Act.

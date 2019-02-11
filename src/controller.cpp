@@ -18,8 +18,8 @@ Controller::~Controller ()
 SmartDevice::Status Controller::GetState ()
 {
     // Restart device.
-    device->SetMode (SmartDevice::Mode::On);
     device->SetMode (SmartDevice::Mode::Off);
+    device->SetMode (SmartDevice::Mode::On);
 
     const SmartDevice::Measurement v = device->GetMeasurement ();
     if (-1 == v) {
