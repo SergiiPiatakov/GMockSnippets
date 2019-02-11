@@ -19,10 +19,13 @@ set (GTEST_INCLUDE_DIRS   "${source_dir}/googletest/include")
 set (GTEST_LIBRARIES      "${binary_dir}/googlemock/gtest/libgtest.a")
 set (GTEST_MAIN_LIBRARIES "${binary_dir}/googlemock/gtest/libgtest_main.a")
 set (GTEST_BOTH_LIBRARIES ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES})
+set (GMOCK_INCLUDE_DIRS   "${source_dir}/googlemock/include")
+set (GMOCK_LIBRARIES      "${binary_dir}/googlemock/libgmock.a")
 
 include_directories (
     ${PROJECT_SOURCE_DIR}/test
     ${GTEST_INCLUDE_DIRS}
+    ${GMOCK_INCLUDE_DIRS}
 )
 
 # Special flags fo generating code coverage.
@@ -42,6 +45,7 @@ add_executable (controller_test EXCLUDE_FROM_ALL ${controller_test_SOURCES})
 target_link_libraries (
     controller_test
     ${GTEST_BOTH_LIBRARIES}
+    ${GMOCK_LIBRARIES}
     gcov
     pthread
 )

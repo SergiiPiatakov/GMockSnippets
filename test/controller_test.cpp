@@ -1,7 +1,8 @@
 #include <gtest/gtest.h>
 #include "controller.h"
-#include "device_stub.h"
+#include "device_mock.h"
 
+using ::testing::Return;
 
 class ControllerTest : public ::testing::Test
 {
@@ -11,7 +12,7 @@ class ControllerTest : public ::testing::Test
 
         void SetUp () override
         {
-            device     = new StubDevice ();
+            device     = new MockDevice ();
             controller = new BestSolution::Controller (device);
         }
 
@@ -36,8 +37,23 @@ TEST_F (ControllerTest, CreateController)
 TEST_F (ControllerTest, GetState_Alarm)
 {
     // Arrange.
-    // Every thing is ready.
+    EXPECT_CALL (* (static_cast <MockDevice *> (device) ), GetMeasurement () )
+                .WillOnce (Return (-1) );
     const SmartDevice::Status etalon {SmartDevice::Status::Alarm};
+
+    // Act.
+    const SmartDevice::Status test = controller->GetState ();
+
+    // Assert.
+    EXPECT_EQ (etalon, test);
+}
+
+TEST_F (ControllerTest, GetState_Success)
+{
+    // Arrange.
+    EXPECT_CALL (* (static_cast <MockDevice *> (device) ), GetMeasurement () )
+                .WillOnce (Return (+1) );
+    const SmartDevice::Status etalon {SmartDevice::Status::Success};
 
     // Act.
     const SmartDevice::Status test = controller->GetState ();
