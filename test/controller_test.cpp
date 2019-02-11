@@ -4,6 +4,7 @@
 
 using ::testing::Return;
 using ::testing::InSequence;
+using ::testing::_;
 
 class ControllerTest : public ::testing::Test
 {
@@ -40,12 +41,12 @@ TEST_F (ControllerTest, GetState_Alarm)
     // Arrange.
     InSequence s;   // We worry about the sequence!
 
+    EXPECT_CALL (* (static_cast <MockDevice *> (device) ), GetMeasurement () )
+                .WillOnce (Return (-1) );
     EXPECT_CALL (* (static_cast <MockDevice *> (device) ), SetMode (SmartDevice::Mode::Off) )
                 .Times (1);
     EXPECT_CALL (* (static_cast <MockDevice *> (device) ), SetMode (SmartDevice::Mode::On) )
                 .Times (1);
-    EXPECT_CALL (* (static_cast <MockDevice *> (device) ), GetMeasurement () )
-                .WillOnce (Return (-1) );
     const SmartDevice::Status etalon {SmartDevice::Status::Alarm};
 
     // Act.
@@ -60,6 +61,8 @@ TEST_F (ControllerTest, GetState_Success)
     // Arrange.
     EXPECT_CALL (* (static_cast <MockDevice *> (device) ), GetMeasurement () )
                 .WillOnce (Return (+1) );
+    EXPECT_CALL (* (static_cast <MockDevice *> (device) ), SetMode (_) )
+                .Times (0);
     const SmartDevice::Status etalon {SmartDevice::Status::Success};
 
     // Act.
